@@ -42,7 +42,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<Navbar />
-					<main className="bg-background mt-16 md:mt-20 relative">
+					<main className="bg-background mt-16 relative">
 						{children}
 
 						<div className="fixed bottom-2 right-2">
