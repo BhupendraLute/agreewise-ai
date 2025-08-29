@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import Navbar from "../components/Navbar";
 import { ThemeToggle } from "../components/ThemeToggle";
+import SessionWrapper from "@/components/SessionWrapper";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -35,21 +36,23 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 				suppressHydrationWarning
 			>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
-				>
-					<Navbar />
-					<main className="bg-background mt-16 relative">
-						{children}
+				<SessionWrapper>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<Navbar />
+						<main className="bg-background mt-16 relative">
+							{children}
 
-						<div className="fixed bottom-2 right-2">
-							<ThemeToggle />
-						</div>
-					</main>
-				</ThemeProvider>
+							<div className="fixed bottom-2 right-2">
+								<ThemeToggle />
+							</div>
+						</main>
+					</ThemeProvider>
+				</SessionWrapper>
 			</body>
 		</html>
 	);
