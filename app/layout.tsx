@@ -43,14 +43,16 @@ export default function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						<Navbar />
-						<main className="bg-background mt-16 relative">
-							{children}
+						<div className="w-full mx-auto max-w-[1440px]">
+							<Navbar />
+							<main className="bg-background relative">
+								{children}
 
-							<div className="fixed bottom-2 right-2">
-								<ThemeToggle />
-							</div>
-						</main>
+								<div className="fixed bottom-2 right-2">
+									<ThemeToggle />
+								</div>
+							</main>
+						</div>
 					</ThemeProvider>
 				</SessionWrapper>
 			</body>

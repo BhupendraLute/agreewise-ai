@@ -3,6 +3,20 @@ import { ArrowRightIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+const HeroButton = ({ text, link }: { text: string; link: string }) => {
+	return (
+		<Button className="group hover:scale-105 duration-200 hover:font-bold p-0 m-0">
+			<Link
+				href={link}
+				className="px-4 py-2 flex items-center justify-center relative duration-200"
+			>
+				<span className="font-semibold">{text}</span>
+				<ArrowRightIcon className="ml-2 transform transition-transform duration-200 rotate-[-30deg] group-hover:rotate-0" />
+			</Link>
+		</Button>
+	);
+};
+
 export default function Home() {
 	return (
 		<div className="w-full">
@@ -18,18 +32,11 @@ export default function Home() {
 							simple language so you can understand what you’re
 							signing — with confidence and clarity.
 						</p>
-						<div className="flex items-center justify-center mt-8">
-							<Button className="hover:scale-105 hover:italic duration-200 hovertext-bold">
-								<Link
-									href="/auth/signin"
-									className="px-4 py-2 flex items-center justify-center relative hover:gap-0.5 duration-200"
-								>
-									<span className="text-semibold">
-										Get Started
-									</span>
-									<ArrowRightIcon className="ml-2" />
-								</Link>
-							</Button>
+						<div className="flex items-center justify-center gap-4 mt-8">
+							<HeroButton
+								text="Get Started"
+								link="/auth/signin"
+							/>
 						</div>
 					</div>
 					<div className="flex items-center justify-center relative overflow-hidden rounded-full">

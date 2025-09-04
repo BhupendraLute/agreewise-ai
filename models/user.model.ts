@@ -19,7 +19,7 @@ const UserSchema = new Schema<IUser>(
 			required: [true, "Email is required"],
 			unique: [true, "Email already exists"],
 		},
-		password: { type: String },
+		password: { type: String, default: "" },
 		avatar: {
 			type: String,
 			default: "",

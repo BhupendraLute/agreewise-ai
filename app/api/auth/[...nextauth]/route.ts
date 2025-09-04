@@ -7,7 +7,9 @@ import NextAuth, {
 } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
+import { compare } from "bcryptjs";
 
 export const authOptions: AuthOptions = {
 	providers: [
@@ -24,6 +26,45 @@ export const authOptions: AuthOptions = {
 					access_type: "offline",
 					response_type: "code",
 				},
+			},
+		}),
+		CredentialsProvider({
+			name: "Credentials",
+			credentials: {
+				email: {
+					label: "Email",
+					type: "text",
+					placeholder: "john@example.com",
+				},
+				password: { label: "Password", type: "password" },
+			},
+			async authorize(credentials) {
+				await connectToDatabase();
+
+				if (!credentials?.email || !credentials?.password) {
+					throw new Error("Please enter both email and password");
+				}
+
+				const user = await User.findOne({
+					email: credentials.email,
+				}).lean<IUser>();
+
+				if (!user) throw new Error("No user found with this email");
+                if(!user._id) throw new Error("Invalid user. User does not have an ID");
+				if (!user.password) throw new Error("User has no password set, use OAuth to access this account.");
+
+				const isValid = await compare(
+					credentials.password,
+					user.password
+				);
+				if (!isValid) throw new Error("Invalid password");
+
+				return {
+					id: user._id.toString(),
+					name: user.name || user.email,
+					email: user.email,
+					avatar: user.avatar || "",
+				};
 			},
 		}),
 	],
