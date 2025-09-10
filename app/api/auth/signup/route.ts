@@ -47,6 +47,7 @@ export async function POST(req: Request) {
       { message: "User created successfully" },
       { status: 201 }
     )
+    // @ts-nocheck
   } catch (error: any) {
     console.error("Signup error:", error)
     return NextResponse.json(

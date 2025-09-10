@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
-import Navbar from "../components/Navbar";
 import { ThemeToggle } from "../components/ThemeToggle";
 import SessionWrapper from "@/components/SessionWrapper";
 
@@ -43,15 +42,10 @@ export default function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						<div className="w-full mx-auto max-w-[1440px]">
-							<Navbar />
-							<main className="bg-background relative">
-								{children}
+						{children}
 
-								<div className="fixed bottom-2 right-2">
-									<ThemeToggle />
-								</div>
-							</main>
+						<div className="fixed bottom-2 right-2">
+							<ThemeToggle />
 						</div>
 					</ThemeProvider>
 				</SessionWrapper>

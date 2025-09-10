@@ -1,52 +1,77 @@
 import { Schema, Document, model, models } from "mongoose";
 
-export interface IAgreemant extends Document {
-    userId: Schema.Types.ObjectId;
-    title: string;
-    clauses: IClause[];
-    summary: string;
-    category: string;
+// ---- Interfaces ----
+export interface IRisk {
+  risk_level: "low" | "medium" | "high";
+  risk: string;
+  solution: string;
 }
 
 export interface IClause extends Document {
-    clause_number: number;
-    original_text: string;
-    simplified_text: string;
-    obligations: string[];
-    rights: string[];
-    risks: string[];
-    tip: string;
+  clause_number: number;
+  original_text: string;
+  simplified_text: string;
+  obligations: string[];
+  rights: string[];
+  risks: IRisk[];
+  tip: string;
 }
 
-const AgreementSchema = new Schema<IAgreemant>(
-    {
-        userId: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-        },
-        title: {
-            type: String,
-        },
-        clauses: [
-            {
-                clause_number: Number,
-                original_text: String,
-                simplified_text: String,
-                obligations: [String],
-                rights: [String],
-                risks: [String],
-                tip: String,
-            },
-        ],
-        summary: {
-            type: String,
-        },
-        category: {
-            type: String,
-        },
+export interface IAgreemant extends Document {
+  user: Schema.Types.ObjectId;
+  title: string;
+  clauses: IClause[];
+  agreement_text: string;
+  summary: string;
+  category: string;
+}
+
+// ---- Sub-schemas ----
+const RiskSchema = new Schema<IRisk>(
+  {
+    risk_level: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      required: true,
     },
-    { timestamps: true }
+    risk: { type: String, required: true },
+    solution: { type: String, required: true },
+  },
+  { _id: false }
 );
 
-export const Agreement = models.Agreement || model<IAgreemant>("Agreement", AgreementSchema);
+const ClauseSchema = new Schema<IClause>(
+  {
+    clause_number: { type: Number, required: true },
+    original_text: { type: String, required: true },
+    simplified_text: { type: String, required: true },
+    obligations: [{ type: String }],
+    rights: [{ type: String }],
+    risks: [RiskSchema],
+    tip: { type: String },
+  },
+  { _id: false }
+);
 
+// ---- Agreement schema ----
+const AgreementSchema = new Schema<IAgreemant>(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    title: { type: String },
+    clauses: [ClauseSchema],
+    agreement_text: {
+      type: String,
+      required: true,
+    },
+    summary: { type: String },
+    category: { type: String },
+  },
+  { timestamps: true }
+);
+
+export const Agreement =
+  models.Agreement || model<IAgreemant>("Agreement", AgreementSchema);

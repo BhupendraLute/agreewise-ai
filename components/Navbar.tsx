@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
-	const { data: session, status } = useSession();
+	const {  status } = useSession();
 	const [loginStatus, setLoginStatus] = useState("unauthenticated");
 
 	useEffect(() => {
