@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { client } from "@/lib/genai";
 import { connectToDatabase } from "@/lib/db/mongoose";
-import { Agreement, IAgreemant } from "@/models/agreement.model";
+import { Agreement, IAgreement } from "@/models/agreement.model";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { User } from "@/models/user.model";
@@ -115,7 +115,7 @@ Agreement text to analyze:
 		if (json.error)
 			return NextResponse.json({ error: json.error }, { status: 500 });
 
-		const agreement: IAgreemant = await Agreement.create({
+		const agreement: IAgreement = await Agreement.create({
 			user: user?._id as Schema.Types.ObjectId,
 			title: json.agreement_title,
 			clauses: json.clauses,
@@ -130,7 +130,7 @@ Agreement text to analyze:
 				{ status: 500 }
 			);
 
-		return NextResponse.json(agreement, { status: 200 });
+		return NextResponse.json({agreement}, { status: 200 });
 	} catch (err: any) {
 		console.error(err);
 		return NextResponse.json({ error: err.message }, { status: 500 });

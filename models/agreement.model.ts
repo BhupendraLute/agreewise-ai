@@ -17,7 +17,7 @@ export interface IClause extends Document {
   tip: string;
 }
 
-export interface IAgreemant extends Document {
+export interface IAgreement extends Document {
   user: Schema.Types.ObjectId;
   title: string;
   clauses: IClause[];
@@ -54,7 +54,7 @@ const ClauseSchema = new Schema<IClause>(
 );
 
 // ---- Agreement schema ----
-const AgreementSchema = new Schema<IAgreemant>(
+const AgreementSchema = new Schema<IAgreement>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -74,4 +74,4 @@ const AgreementSchema = new Schema<IAgreemant>(
 );
 
 export const Agreement =
-  models.Agreement || model<IAgreemant>("Agreement", AgreementSchema);
+  models.Agreement || model<IAgreement>("Agreement", AgreementSchema);

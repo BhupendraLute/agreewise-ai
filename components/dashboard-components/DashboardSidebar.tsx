@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-	BookOpen,
-	Bot,
-	SquareTerminal,
-} from "lucide-react";
+import { ClockFading, Home, UploadCloud } from "lucide-react";
 
 import {
 	Sidebar,
@@ -20,33 +16,28 @@ import {
 import Image from "next/image";
 import { NavUser } from "./NavUser";
 import { NavMain } from "./NavMain";
+import { useSession } from "next-auth/react";
 
-// This is sample data.
+
+
+
 const data = {
-	user: {
-		name: "shadcn",
-		email: "m@example.com",
-		avatar: "/avatars/shadcn.jpg",
-	},
 	navMain: [
 		{
 			title: "Home",
 			url: "/dashboard",
-			icon: SquareTerminal,
+			icon: Home,
 			isActive: true,
-			
 		},
 		{
 			title: "Upload Agreement",
 			url: "/dashboard/upload-agreement",
-			icon: Bot,
-
+			icon: UploadCloud,
 		},
 		{
-			title: "Agreements",
+			title: "Recent Agreements",
 			url: "/dashboard/agreements",
-			icon: BookOpen,
-		
+			icon: ClockFading,
 		},
 	],
 };
@@ -54,6 +45,8 @@ const data = {
 export function DashboardSidebar({
 	...props
 }: React.ComponentProps<typeof Sidebar>) {
+	const {data: session} = useSession();
+	const user = session?.user;
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarContent>
@@ -66,7 +59,7 @@ export function DashboardSidebar({
 									alt="AgreeWise"
 									width={50}
 									height={50}
-                  className="size-8 md:size-10"
+									className="size-8 md:size-10"
 								/>
 								<span>AgreeWise</span>
 							</SidebarMenuButton>
@@ -76,7 +69,7 @@ export function DashboardSidebar({
 				<NavMain items={data.navMain} />
 			</SidebarContent>
 			<SidebarFooter>
-				<NavUser user={data.user} />
+				<NavUser user={{ name: user?.name || "", email: user?.email || "", avatar: user?.avatar || ""}} />
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>

@@ -2,16 +2,17 @@
 
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa6";
 import { VscSend } from "react-icons/vsc";
 
 export default function UploadPage() {
+	const router = useRouter();
 	const [mode, setMode] = useState<"pdf" | "text">("pdf");
 	const [file, setFile] = useState<File | null>(null);
 	const [rawText, setRawText] = useState("");
 	const [agreementText, setAgreementText] = useState("");
-	const [result, setResult] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [uploadingStatus, setUploadingStatus] = useState("");
 	const [error, setError] = useState<string | null>(null);
@@ -19,7 +20,6 @@ export default function UploadPage() {
 	async function handleSubmit() {
 		setLoading(true);
 		setError(null);
-		setResult("");
 
 		setUploadingStatus("Uploading Agreement...");
 
@@ -38,7 +38,7 @@ export default function UploadPage() {
 				});
 				const data = await pdfResponse.json();
 				if (!pdfResponse.ok)
-					throw new Error("Something went wrong. Please try again.");
+					throw new Error("Something went wrong while uploading pdf. Please try again.");
 
 				if (data.text) {
 					setAgreementText(data.text);
@@ -64,7 +64,11 @@ export default function UploadPage() {
 				body: JSON.stringify({ agreement_text: agreementText }),
 			});
 			const data = await res.json();
-			setResult(data.text);
+			if (!res.ok)
+				throw new Error("Something went wrong while analyzing agreement. Please try again.");
+			
+			router.push(`/dashboard/agreements/agreement/${data?.agreement?._id}`);
+
 		} catch (err: any) {
 			setError(err.message);
 		} finally {
