@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -79,9 +78,8 @@ export default function UploadPage() {
 
 	return (
 		<div className="w-full mx-auto max-w-[1440px]">
-			<Navbar />
 			<main className="bg-background relative">
-				<div className="flex flex-col items-center justify-start min-h-[90vh] p-8 space-y-4">
+				<div className="flex flex-col items-center justify-start min-h-[89vh] p-8 space-y-4">
 					<div className="text-center">
 						<h1 className="text-3xl md:text-5xl font-bold text-primary">
 							Upload Legal Agreement
