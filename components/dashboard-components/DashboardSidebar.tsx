@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ClockFading, Home, UploadCloud } from "lucide-react";
+import { FileText, Home, UploadCloud } from "lucide-react";
 
 import {
 	Sidebar,
@@ -35,9 +35,9 @@ const data = {
 			icon: UploadCloud,
 		},
 		{
-			title: "Recent Agreements",
+			title: "All Agreements",
 			url: "/dashboard/agreements",
-			icon: ClockFading,
+			icon: FileText,
 		},
 	],
 };
@@ -52,16 +52,16 @@ export function DashboardSidebar({
 			<SidebarContent>
 				<SidebarGroup className="pt-2 mb-4 text-xl md:text-2xl text-foreground font-semibold">
 					<SidebarMenu>
-						<SidebarMenuItem>
+						<SidebarMenuItem className="mb-2 pointer-events-none">
 							<SidebarMenuButton tooltip={"AgreeWise"}>
 								<Image
 									src="/favicon.webp"
 									alt="AgreeWise"
-									width={50}
-									height={50}
+									width={100}
+									height={100}
 									className="size-8 md:size-10"
 								/>
-								<span>AgreeWise</span>
+								<span className="text-xl md:text-2xl">AgreeWise</span>
 							</SidebarMenuButton>
 						</SidebarMenuItem>
 					</SidebarMenu>

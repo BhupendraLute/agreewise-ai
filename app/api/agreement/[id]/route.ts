@@ -61,3 +61,46 @@ export async function GET(
 		return NextResponse.json({ error: err.message }, { status: 500 });
 	}
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+	const { id } = await params;
+    await connectToDatabase();
+
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const agreement = await Agreement.findById(id);
+    if (!agreement) {
+      return NextResponse.json(
+        { error: "Agreement not found" },
+        { status: 404 }
+      );
+    }
+
+    if (agreement.user.toString() !== session.user.id) {
+      return NextResponse.json(
+        { error: "Forbidden" },
+        { status: 403 }
+      );
+    }
+
+    await Agreement.findByIdAndDelete(id);
+
+    return NextResponse.json({ message: "Agreement deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting agreement:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
