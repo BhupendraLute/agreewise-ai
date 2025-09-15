@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
+import os from "os";
 import path from "path";
 import { extractTextFromPdf } from "@/helpers/get-pdf-text";
 
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const tempDir = process.env.TMPDIR || ("/tmp") || ("/var/tmp") || (process.cwd() + "/tmp");
+    const tempDir = os.tmpdir() || ("/tmp");
     filePath = path.join(tempDir, `${Date.now()}-${file.name}`);
     fs.writeFileSync(filePath, buffer);
 
