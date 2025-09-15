@@ -2,30 +2,25 @@ import fs from "fs";
 import pdf from "pdf-parse-fixed";
 
 /**
- * Extract text directly from the PDF text layer.
+ * Extract text from a PDF file at the given path.
  */
 export async function extractTextFromPdf(
-	filePath: string
+  filePath: string
 ): Promise<string | null> {
-	try {
-		const buffer = fs.readFileSync(filePath);
-		const data = await pdf(buffer);
+  try {
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`File not found: ${filePath}`);
+    }
 
-		if (data.text.trim().length > 50) {
-			return data.text.trim();
-		}
-		return null;
-	} catch (error) {
-		console.error("Error extracting text from PDF:", error);
-		return null;
-	}
-}
+    const buffer = fs.readFileSync(filePath);
+    const data = await pdf(buffer);
 
-export async function extractTextWithOcr(filePath: string) : Promise<string | null>{
-	try {
+    if (data.text && data.text.trim().length > 50) {
+      return data.text.trim();
+    }
     return null;
   } catch (error) {
-     console.error("Error extracting text with OCR:", error);
+    console.error("Error extracting text from PDF:", error);
     return null;
   }
 }

@@ -13,33 +13,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // Save uploaded file to /tmp
+    // Save uploaded file to /tmp 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const tempDir = path.join(process.cwd(), "public", "tmp");
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
+    const tempDir = process.env.TMPDIR || "/tmp";
     filePath = path.join(tempDir, `${Date.now()}-${file.name}`);
     fs.writeFileSync(filePath, buffer);
 
-    // Try extracting text
+    // Extract text
     let text: string | null = null;
     try {
       text = await extractTextFromPdf(filePath);
     } catch (err) {
       console.warn("pdf-parse failed", err);
-      return NextResponse.json({ error: "Failed to extract text"});
+      return NextResponse.json({ error: "Failed to extract text" });
     }
 
-    // // If extraction failed, try OCR
-    // if (!text) {
-    //   // text = await extractTextWithOcr(filePath);
-    // }
-
     if (!text) {
-      return NextResponse.json({ error: "Failed to extract text"}, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to extract text" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ text });
@@ -50,7 +45,7 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   } finally {
-    // Cleanup uploaded file after processing
+    // Cleanup temp file
     if (filePath && fs.existsSync(filePath)) {
       try {
         fs.unlinkSync(filePath);
