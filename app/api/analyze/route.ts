@@ -10,7 +10,7 @@ import { Schema } from "mongoose";
 function sanitizeOutput(json: any) {
 	if (!json || !Array.isArray(json.clauses)) return json;
 
-	json.clauses = json.clauses.map((clause: any, i: number) => {
+	json.clauses = json.clauses.map((clause: any) => {
 		if (!Array.isArray(clause.risks)) {
 			try {
 				const parsed = JSON.parse(clause.risks);

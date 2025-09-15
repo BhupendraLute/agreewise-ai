@@ -14,7 +14,7 @@ const SignupPage = () => {
 			setIsAuthenticated(true);
 			router.push("/dashboard");
 		}
-	});
+	}, [router, status]);
 	return (
 		<div className="flex justify-center items-center h-[90vh] p-4">
 			{isAuthenticated ? <AuthRedirectLoader /> : <SignupForm />}

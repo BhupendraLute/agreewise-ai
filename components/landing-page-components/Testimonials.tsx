@@ -1,5 +1,3 @@
-import { QuoteIcon } from "lucide-react"
-
 const Testimonials = () => {
   return (
     <section

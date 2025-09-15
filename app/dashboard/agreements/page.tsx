@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { connectToDatabase } from "@/lib/db/mongoose";
 import { Agreement } from "@/models/agreement.model";
 import { getServerSession } from "next-auth";
