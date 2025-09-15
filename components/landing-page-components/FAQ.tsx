@@ -23,7 +23,7 @@ const FAQ = () => {
 							Is my data secure?
 						</AccordionTrigger>
 						<AccordionContent className="text-muted-foreground">
-							Yes, your documents are encrypted and only
+							Yes, your documents are only
 							accessible to you. We never share your agreements
 							with third parties.
 						</AccordionContent>
