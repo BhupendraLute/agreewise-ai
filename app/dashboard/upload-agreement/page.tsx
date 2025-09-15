@@ -14,9 +14,10 @@ export default function UploadPage() {
 	const [file, setFile] = useState<File | null>(null);
 	const [rawText, setRawText] = useState("");
 	const [loading, setLoading] = useState(false);
-	const [step, setStep] = useState<number>(0); // 0 = idle, 1 = upload, 2 = extract, 3 = analyze, 4 = done
+	const [step, setStep] = useState<number>(0); // 0 = idle, 1 = upload, 2 = extract, 3 = analyze, 4 = done, 5 = getting details
 	const [error, setError] = useState<string | null>(null);
 	const [dragActive, setDragActive] = useState(false);
+	const [redirecting, setRedirecting] = useState(false);
 
 	async function handleSubmit() {
 		setLoading(true);
@@ -64,6 +65,7 @@ export default function UploadPage() {
 
 				setStep(4);
 				success = true;
+				setRedirecting(true);
 				router.push(
 					`/dashboard/agreements/agreement/${data?.agreement?._id}`
 				);
@@ -239,6 +241,10 @@ export default function UploadPage() {
 						<p className="text-red-600 text-sm font-medium">
 							{error}
 						</p>
+					)}
+
+					{redirecting && (
+						<p className="text-muted-foreground">Redirecting to the details page...</p>
 					)}
 				</div>
 			</main>
