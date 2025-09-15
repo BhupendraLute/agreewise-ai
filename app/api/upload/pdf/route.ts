@@ -46,7 +46,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Error in /api/upload/pdf:", error);
     return NextResponse.json(
-      { error: "Failed to process PDF, please try again" },
+      { error: error, message: "Failed to process PDF, please try again" },
       { status: 500 }
     );
   } finally {
