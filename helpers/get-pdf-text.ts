@@ -1,5 +1,5 @@
 import fs from "fs";
-import pdf from "pdf-parse";
+import pdf from "pdf-parse-fixed";
 
 /**
  * Extract text directly from the PDF text layer.
