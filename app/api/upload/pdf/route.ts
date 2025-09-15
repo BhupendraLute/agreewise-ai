@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const tempDir = process.env.TMPDIR || "/tmp";
+    const tempDir = process.env.TMPDIR || (process.cwd()+"/tmp");
     filePath = path.join(tempDir, `${Date.now()}-${file.name}`);
     fs.writeFileSync(filePath, buffer);
 
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Error in /api/upload/pdf:", error);
     return NextResponse.json(
-      { error: error, message: "Failed to process PDF, please try again" },
+      { error: "Failed to process PDF, please try again" },
       { status: 500 }
     );
   } finally {
