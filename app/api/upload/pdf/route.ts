@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const tempDir = process.env.TMPDIR || (process.cwd()+"/tmp");
+    const tempDir = process.env.TMPDIR || ("/tmp") || ("/var/tmp") || (process.cwd() + "/tmp");
     filePath = path.join(tempDir, `${Date.now()}-${file.name}`);
     fs.writeFileSync(filePath, buffer);
 
